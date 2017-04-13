@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Zuwanderung nach und Abwanderung aus Basel-Stadt </title>
+	<meta name=description content="Zuwanderung nach und Abwanderung aus Basel-Stadt">
+	<meta name=viewport content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="favicon.png" type="image/png">	
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link href="dist/app-v1.css" rel="stylesheet" media="all">
+
+	<!--[if lt IE 9]><script src=javascripts/html5shiv-printshiv.js></script><![endif]-->
+  <script src="dist/app-v1.js"></script>
+  <link href="stylesheets/scroll.css" rel="stylesheet" media="all">
+</head>
+<body>
+
+  <div id=container class="container">
+	<header role="banner">
+  		<h1>Zuwanderung nach und Abwanderung aus Basel-Stadt</h1>
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="lead-in">Interaktive Visualisierung der Wanderungsströme<br/>von und nach Basel-Stadt.</div>
+        </div>
+        <div class="col-sm-4">
+          <a href="index.html"><img src="images/back.gif" alt="Zurück zur Einstiegsseite Wanderungen" width="117" height="35"></a>
+        </div>
+      </div>
+      <div class="credits">
+       von Christa Moll Freddi &amp; Jonas Bieri, <a>Statistisches Amt Basel-Stadt</a>
+      </div>
+      <hr>
+  	</header>
+
+  	<div class="wrap">
+  		<main role="main">
+        <nav role=navigation>
+          <div id="timeline"></div>
+        </nav>
+        <div id="diagram"></div>
+  		</main>
+  	</div>
+
+
+  	<footer>
+		<small>
+			Idee <a>Dr. Nikola Sander</a>, Programmierung <a >Null2.net</a>, Initiale Umsetzung <a>The Global Flow of People</a>, Source Code <a>github.com</a>,
+			Lizenz <a>CC BY-NC 3.0</a>, Quelle: Kantonale Bevölkerungsstatistik BS, <a>Einbetten</a>
+		</small>
+	</footer>
+
+
+
+    <div id=help-wrapper class=help-wrapper>
+      <div class="help" id="help">
+        <div class="tab">Anleitung</div>
+        <div class="help-content">
+          <h3>Anleitung</h3>
+          <img src="images/help.png" class="left">
+          <p>
+			Herkunft und Ziel der Migration sind durch Kreissegmente repräsentiert.
+			Jede Region und jedes Land / Kanton / Wohnviertel erhält eine Farbe zugewiesen.
+			Wanderungen zwischen Kreissegmenten erhalten die Farbe der Wegzugsregion, die Breite der Bänder ist proportional zur Anzahl Wanderungen zwischen den Segmenten.
+			Die Richtung der Wanderung ist neben der Farbe auch durch den Abstand des Streifens zum Kreissegment angezeigt: kleiner Abstand zum Startsegment, grosser Abstand zum Zielsegment.
+            <b>Segmente sind anklickbar, dadurch werden sie geöffnet und geschlossen.</b>
+          </p>
+          <div class="clear"></div>
+          <p>
+			Für den Wechsel zwischen den zu analysierenden Jahren können auch die Tasten 1 bis 9 verwendet werden.
+			Zurückführen der Grafik in ihren Ursprungszustand durch Ctrl und R, Zoom durch Ctrl und + bzw. Ctrl und -.
+          </p>
+
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // help
+    (function() {
+      var help = d3.select('#help');
+
+      help.on('click', function() {
+        var isActive = help.classed('active');
+
+        help
+          .classed('active', !isActive)
+          .transition()
+          .style('width', isActive ? '30px' : '572px');
+      });
+
+      function helpOffset() {
+        var offset = Math.max((document.body.clientWidth - document.getElementById('container').clientWidth) / 2, 0);
+
+        help.style('right', offset + 'px');
+      }
+      d3.select(window).on('resize.help-resize', helpOffset);
+      helpOffset();
+    })();
+  </script>
+
+
+  <script>
+    (function() {
+
+      var datafile = 'json/migrationsStatA_Migr.json';
+      var aLittleBit = Math.PI / 100000;
+
+      d3.json(datafile, function(data) {
+        var now = 2015;
+        var chart = Globalmigration.chart(data, {
+          element: '#diagram',
+          now: now,
+          animationDuration: 500,
+          margin: 125,
+          arcPadding: 0.018,
+          InFlowLabel: 'Zugezogene',
+          OutFlowLabel: 'Weggezogene',
+          layout: {
+            threshold: 1,
+            labelThreshold: 1,
+			//colors: '73B97C 68AB2B 007A2F 0A3B19 FFBB58 FF8028 DC440E B00000 661200 B6CFD7 D3E2E4 A8C3CA 689199 246370 083038 ECE1D0 C4AB91 9E7C59 67401E 3A2012 D7E8D2 '.split(' ').map(function(c) { return '#' + c; })
+			colors: 'cd3d08 ec8f00 6dae29 683f92 b60275 2058a5 00a592 009d3c 378974 ffca00'.split(' ').map(function(c) { return '#' + c; })
+          }
+        });
+
+        Globalmigration.timeline(chart, {
+          now: now,
+          element: '#timeline'
+        });
+
+        chart.draw(now);
+      });
+    })();
+
+  </script>
+
+
+</body>
+</html>

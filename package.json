@@ -1,0 +1,42 @@
+{
+  "name": "baselmigration",
+  "description": "Basel-Satdt Migration Data Sheet",
+  "version": "1.0.18",
+  "homepage": "https://github.com/jb3-2/baselmigration",
+  "author": {
+    "name": "null2 GmbH Berlin",
+    "email": "info@null2.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jb3-2/baselmigration.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jb3-2/baselmigration/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jb3-2/baselmigration/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "start": "http-server"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "csv": "~0.3.2",
+    "http-server": "~0.5.3",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-copy": "~0.5.0"
+  },
+  "keywords": []
+}
